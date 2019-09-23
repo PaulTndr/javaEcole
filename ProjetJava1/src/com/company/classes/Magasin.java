@@ -35,7 +35,7 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
                 this.listTauxArticles.put(oneArticle.getName(),new  Long(100));
             }
         } else{
-            System.out.println("Le magasin n'a pas assez d'argent pour procéder à l'achat");
+            System.out.println("Le magasin n'a pas assez d'argent pour procéder à l'achat de "+quantite+" "+oneArticle.getName()+".s");
         }
     }
 
@@ -43,16 +43,27 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         System.out.println(
                         "Actuellement le taux pour l'article "+ oneArticle.getName()+
                         " est de "+ this.listTauxArticles.get(oneArticle.getName())+
-                        " ce qui équivaut à un prix de " +oneArticle.getPrixBase()*(this.listTauxArticles.get(oneArticle.getName())/100)
+                        " ce qui équivaut à un prix de " +oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)
         );
     };
     public void lancerSoldes(Article oneArticle, int tauxSoldePercent){
         //On remplace le taux peu importe les soldes précédentes
         this.listTauxArticles.put(oneArticle.getName(), new Long(100-tauxSoldePercent));
+        //On fait la pub de cette nouvelle solde
+        this.fairePublicite(oneArticle);
     };
 
     public void stopSoldes(Article oneArticle){
         this.listTauxArticles.put(oneArticle.getName(), new Long(100));
+    };
+
+    public void fairePublicite(Article oneArticle){
+        System.out.println("##################################");
+        System.out.println("Votre attention svp");
+        System.out.println("Nous vendons nos "+oneArticle.getName()+"s à -"+(100-this.listTauxArticles.get(oneArticle.getName()))+"%");
+        System.out.println("Cela les fait au prix de seulement "+oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)+"€");
+        System.out.println("Dépéchez vous, il ne reste que "+this.listQuantiteArticles.get(oneArticle.getName())+" articles");
+        System.out.println("##################################");
     };
 
     public String getNom() {

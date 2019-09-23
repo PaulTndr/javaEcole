@@ -3,7 +3,7 @@ import com.company.classes.Article;
 
 public interface ISolde {
 
-    public void printTaux(Article oneArticle);
-    public void lancerSoldes(Article oneArticle, int tauxSoldePercent);
-    public void stopSoldes(Article oneArticle);
+    void printTaux(Article oneArticle);
+    void lancerSoldes(Article oneArticle, int tauxSoldePercent);
+    void stopSoldes(Article oneArticle);
 }
