@@ -3,8 +3,34 @@ package com.company.classes;
 public class Article {
 
     private String name;
+    private String categorie;
     private int prixBase;
-    private int tauxSoldePercent;
+
+    public Article(String name, String categorie, int prixBase){
+        this.name=name;
+        this.categorie = categorie;
+        this.prixBase=prixBase;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "name='" + name + '\'' +
+                ", categorie='" + categorie + '\'' +
+                ", prixBase=" + prixBase +
+                '}';
+    }
+
+    public void print(){
+        System.out.println(this.toString());
+    }
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
 
     public String getName() {
         return name;
@@ -20,13 +46,5 @@ public class Article {
 
     public void setPrixBase(int prixBase) {
         this.prixBase = prixBase;
-    }
-
-    public int getTauxSoldePercent() {
-        return tauxSoldePercent;
-    }
-
-    public void setTauxSoldePercent(int tauxSoldePercent) {
-        this.tauxSoldePercent = tauxSoldePercent;
     }
 }

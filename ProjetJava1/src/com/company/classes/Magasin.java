@@ -14,7 +14,7 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
     private HashMap<String, Long> listTauxArticles;
     private int caisse;
 
-    Magasin(String nom, String adresse,int nbrVendeurs, int caisseInitiale){
+    public Magasin(String nom, String adresse, int nbrVendeurs, int caisseInitiale){
         this.nom = nom;
         this.adresse = adresse;
         this.nbrVendeurs = nbrVendeurs;
@@ -101,5 +101,21 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
 
     public void setCaisse(int caisse) {
         this.caisse = caisse;
+    }
+
+    @Override
+    public String toString() {
+        return "Magasin{" +
+                "nom='" + nom + '\'' +
+                ", adresse='" + adresse + '\'' +
+                ", nbrVendeurs=" + nbrVendeurs +
+                ", listQuantiteArticles=" + listQuantiteArticles +
+                ", listTauxArticles=" + listTauxArticles +
+                ", caisse=" + caisse +"€"+
+                '}';
+    }
+
+    public void print(){
+        System.out.println(this.toString());
     }
 }
