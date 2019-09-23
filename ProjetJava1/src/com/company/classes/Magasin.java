@@ -46,7 +46,16 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
                         " ce qui équivaut à un prix de " +oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)
         );
     };
-    public void lancerSoldes(Article oneArticle, int tauxSoldePercent){
+    public void lancerSoldes(Article oneArticle, int tauxSoldePercent) throws pasEntre0Et100Exception{
+        try{
+            if (tauxSoldePercent<0 || tauxSoldePercent>=100){
+                throw new pasEntre0Et100Exception(tauxSoldePercent);
+            }
+        } catch (pasEntre0Et100Exception exc){
+            System.out.println(exc.getMessage());
+            return;
+        }
+
         //On check si on a un au moins un article de ce type
         if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){
             System.out.println("Vous ne pouvez pas lancer de solde sur un article que vous ne possedez pas");
