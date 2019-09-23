@@ -47,6 +47,11 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         );
     };
     public void lancerSoldes(Article oneArticle, int tauxSoldePercent){
+        //On check si on a un au moins un article de ce type
+        if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){
+            System.out.println("Vous ne pouvez pas lancer de solde sur un article que vous ne possedez pas");
+            return;
+        }
         //On remplace le taux peu importe les soldes précédentes
         this.listTauxArticles.put(oneArticle.getName(), new Long(100-tauxSoldePercent));
         //On fait la pub de cette nouvelle solde
@@ -87,12 +92,30 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         }
         Long remainQuantite = this.listQuantiteArticles.get(oneArticle.getName())-quantite;
         this.listQuantiteArticles.put(oneArticle.getName(), remainQuantite);
+        if(remainQuantite==0){
+            //On arrête les soldes sur cet articles
+
+            //On supprime l'article du magasin
+            this.listQuantiteArticles.remove(oneArticle.getName());
+            this.listTauxArticles.remove(oneArticle.getName());
+        }
         this.caisse+=quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100);
         System.out.println("La vente s'est déroulée avec succès");
     }
 
     public void rembourser(Article oneArticle, int quantite){
-
+        if (this.caisse<quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)){
+            System.out.println("C'est la faillite on peut pas rembourser désolé");
+            return;
+        }
+        if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){
+            this.listQuantiteArticles.put(oneArticle.getName(),new Long(0));
+            this.listTauxArticles.put(oneArticle.getName(),new Long(100));
+        }
+        Long remainQuantite = this.listQuantiteArticles.get(oneArticle.getName())+quantite;
+        this.listQuantiteArticles.put(oneArticle.getName(), remainQuantite);
+        this.caisse-=quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100);
+        System.out.println("Le remboursement s'est déroulé avec succès");
     }
 
     public String getNom() {
