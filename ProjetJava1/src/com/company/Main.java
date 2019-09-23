@@ -33,5 +33,10 @@ public class Main {
         //System.out.println(monoprix.getListTauxArticles().toString());
         monoprix.lancerSoldes(frigo,20);
         //System.out.println(monoprix.getListTauxArticles().toString());
+
+        //On va vendre des pommes
+        monoprix.print();
+        monoprix.vendre(pomme, 3);
+        monoprix.print();
     }
 }

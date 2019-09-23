@@ -66,6 +66,35 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         System.out.println("##################################");
     };
 
+    public boolean estVentePossible(Article oneArticle, int quantite){
+        if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){
+            System.out.println("Le magasin n'a pas cet article en stock");
+            return false;
+        } else {
+            if (this.listQuantiteArticles.get(oneArticle.getName())<quantite){
+                System.out.println("Le magasin n'a pas assez d'exemplaire de cet article en stock");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void vendre(Article oneArticle, int quantite){
+        //Les checking sont fait en amont pour savoir si on peut vendre normalement mais autant recheck ici pour le moment
+        if (!this.estVentePossible(oneArticle,quantite)){
+            System.out.println("La vente est impossible");
+            return;
+        }
+        Long remainQuantite = this.listQuantiteArticles.get(oneArticle.getName())-quantite;
+        this.listQuantiteArticles.put(oneArticle.getName(), remainQuantite);
+        this.caisse+=quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100);
+        System.out.println("La vente s'est déroulée avec succès");
+    }
+
+    public void rembourser(Article oneArticle, int quantite){
+
+    }
+
     public String getNom() {
         return nom;
     }
