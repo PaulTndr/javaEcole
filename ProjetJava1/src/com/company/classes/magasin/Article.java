@@ -1,4 +1,4 @@
-package com.company.classes;
+package com.company.classes.magasin;
 
 public class Article {
 

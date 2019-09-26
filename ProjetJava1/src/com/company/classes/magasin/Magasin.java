@@ -1,4 +1,4 @@
-package com.company.classes;
+package com.company.classes.magasin;
 import com.company.interfaces.IPublicite;
 import com.company.interfaces.ISolde;
 import com.company.interfaces.IVendreKilo;
@@ -46,7 +46,7 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
                         " ce qui équivaut à un prix de " +oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)
         );
     };
-    public void lancerSoldes(Article oneArticle, int tauxSoldePercent) throws pasEntre0Et100Exception{
+    public void lancerSoldes(Article oneArticle, int tauxSoldePercent) throws pasEntre0Et100Exception {
         try{
             if (tauxSoldePercent<0 || tauxSoldePercent>=100){
                 throw new pasEntre0Et100Exception(tauxSoldePercent);

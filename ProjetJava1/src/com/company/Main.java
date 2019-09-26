@@ -1,7 +1,5 @@
 package com.company;
-import com.company.classes.*;
-
-import java.util.*;
+import com.company.classes.magasin.*;
 
 public class Main {
 

@@ -1,6 +1,6 @@
 package com.company.interfaces;
-import com.company.classes.Article;
-import com.company.classes.pasEntre0Et100Exception;
+import com.company.classes.magasin.Article;
+import com.company.classes.magasin.pasEntre0Et100Exception;
 
 public interface ISolde {
 

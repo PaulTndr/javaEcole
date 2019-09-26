@@ -1,6 +1,6 @@
 package com.company.interfaces;
 
-import com.company.classes.Article;
+import com.company.classes.magasin.Article;
 
 public interface IVendrePiece {
 
