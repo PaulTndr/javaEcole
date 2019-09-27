@@ -37,9 +37,12 @@ public class CompteBanq {
         return solde;
     }
 
-    public void setSolde(float solde, String code) {
-        if(code.equals(this.code1)) {
+    public void setSolde(float solde, String code1) {
+        if(code1.equals(this.code1)) {
             this.solde = solde;
+        }
+        else{
+            System.out.print("Mauvais code");
         }
     }
 
@@ -47,24 +50,30 @@ public class CompteBanq {
         return decouvertAutorise;
     }
 
-    public void setDecouvertAutorise(float decouvertAutorise, String code) {
-        if(code.equals(this.code2)) {
+    public void setDecouvertAutorise(float decouvertAutorise, String code2) {
+        if(code2.equals(this.code2)) {
             this.decouvertAutorise = decouvertAutorise;
+        }
+        else{
+            System.out.print("Mauvais code");
         }
     }
 
-    public void versement(String code, float somme){
-        this.setSolde(this.solde + somme, code);
+    public void versement(String code1, float somme){
+        this.setSolde(this.solde + somme, code1);
     }
 
-    public void retrait(String code, float somme){
+    public void retrait(String code1, float somme){
         if(this.solde < somme){
             if(this.decouvertAutorise + this.solde > somme){
-                this.setSolde(this.solde - somme, code);
+                this.setSolde(this.solde - somme, code1);
+            }
+            else{
+                System.out.print("Solde insuffisant");
             }
         }
         else{
-            this.setSolde(this.solde - somme, code);
+            this.setSolde(this.solde - somme, code1);
         }
     }
 }

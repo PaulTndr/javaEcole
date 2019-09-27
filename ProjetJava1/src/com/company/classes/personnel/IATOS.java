@@ -13,7 +13,7 @@ public class IATOS extends Personnel {
     }
 
     @Override
-    double calculSalaire() {
+    public double calculSalaire() {
         return fixe + (heuresSup * tauxHeuresSup);
     }
 

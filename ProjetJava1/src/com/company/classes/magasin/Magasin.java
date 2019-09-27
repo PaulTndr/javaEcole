@@ -1,4 +1,6 @@
 package com.company.classes.magasin;
+import com.company.classes.personne.CompteBanq;
+import com.company.classes.personne.Personne;
 import com.company.interfaces.IPublicite;
 import com.company.interfaces.ISolde;
 import com.company.interfaces.IVendreKilo;
@@ -38,6 +40,8 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
             System.out.println("Le magasin n'a pas assez d'argent pour procéder à l'achat de "+quantite+" "+oneArticle.getName()+".s");
         }
     }
+
+
 
     public void printTaux(Article oneArticle){
         System.out.println(
@@ -111,6 +115,24 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         this.caisse+=quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100);
         System.out.println("La vente s'est déroulée avec succès");
     }
+
+    public void vendreAClient(Personne client, CompteBanq compte, String code1, Article oneArticle, int quantite){
+        //Les checking sont fait en amont pour savoir si on peut vendre normalement mais autant recheck ici pour le moment
+        if(client.calculAge() < oneArticle.getAgeMinimum()){
+            System.out.print("La vente est impossible, vous avez moins de 10 ans");
+            return;
+        }
+        if(this.estVentePossible(oneArticle,quantite)) {
+            float prix = quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100);
+            if(compte.getSolde() < prix ){
+            System.out.print("Paiement refusé, votre solde est insuffisant.");
+            return;
+        }
+        vendre(oneArticle, quantite);
+        compte.retrait(code1, prix);
+        }
+    }
+
 
     public void rembourser(Article oneArticle, int quantite){
         if (this.caisse<quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)){

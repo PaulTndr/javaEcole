@@ -1,6 +1,6 @@
-package com.company.classes.enfant;
+package com.company.interfaces;
 
-public interface Scolaire {
+public interface IScolaire {
     boolean petit();
     boolean moyen();
     boolean grand();

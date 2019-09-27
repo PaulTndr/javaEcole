@@ -43,4 +43,14 @@ public class Note {
     public void setValidation(boolean validation) {
         this.validation = validation;
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "matiere='" + matiere + '\'' +
+                ", note=" + note +
+                ", credits=" + credits +
+                ", validation=" + validation +
+                '}';
+    }
 }

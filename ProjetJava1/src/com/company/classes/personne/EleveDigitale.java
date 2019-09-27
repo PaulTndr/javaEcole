@@ -24,6 +24,14 @@ public class EleveDigitale extends Eleve {
         return notes;
     }
 
+    public ArrayList<String> getListeNotes() {
+        ArrayList<String> listeNotes = new ArrayList<String>();
+        for(Note note : notes){
+            listeNotes.add(note.toString());
+        }
+        return listeNotes;
+    }
+
     public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
     }

@@ -1,11 +1,13 @@
 package com.company.classes.enfant;
 
-public class Collegien extends Enfant implements Scolaire {
+import com.company.interfaces.IScolaire;
+
+public class Collegien extends Enfant implements IScolaire {
     private static String [] niveauList = {"6e", "5e", "4e", "3e"};
     private String niveau;
     private boolean examen;
 
-    public Collegien(String nom, String prenom, int anneeNaissance, char sexe, int deptNaissance, String niveau, boolean examen) {
+    public Collegien(String nom, String prenom, int anneeNaissance, char sexe, int deptNaissance, String niveau) {
         super(nom, prenom, anneeNaissance, sexe, deptNaissance);
         this.niveau = niveau;
         setExamen();

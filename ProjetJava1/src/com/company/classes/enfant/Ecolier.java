@@ -1,6 +1,8 @@
 package com.company.classes.enfant;
 
-public class Ecolier extends Enfant implements Scolaire {
+import com.company.interfaces.IScolaire;
+
+public class Ecolier extends Enfant implements IScolaire {
     public static String niveauList [] = {"CP", "CE1", "CE2", "CM1", "CM2"};
     public String niveau;
     public Ecolier(String nom, String prenom, int anneeNaissance, char sexe, int deptNaissance, String niveau) {

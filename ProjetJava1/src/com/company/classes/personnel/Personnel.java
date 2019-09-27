@@ -21,5 +21,5 @@ public abstract class Personnel extends Personne {
         this.anneeEntree = entree;
         this.tempsTravail = tempsTravail;
     }
-    abstract double calculSalaire();
+    public abstract double calculSalaire();
 }

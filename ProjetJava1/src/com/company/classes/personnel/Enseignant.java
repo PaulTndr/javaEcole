@@ -7,10 +7,10 @@ public class Enseignant extends Personnel {
     private int heuresSup;
     private int heuresTravail;
     static double prime;
-    static double tauxHeuresSup;
-    static double fixePRAG;
-    static double fixeMDC;
-    static double fixePROF;
+    static double tauxHeuresSup = 1.7;
+    static double fixePRAG = 2200;
+    static double fixeMDC = 3100;
+    static double fixePROF = 2000;
 
     public Enseignant(String nom, String prenom) {
         super(nom, prenom);
@@ -38,7 +38,7 @@ public class Enseignant extends Personnel {
     }
 
     @Override
-    double calculSalaire() {
+    public double calculSalaire() {
         double salaire = fixe + (heuresSup * tauxHeuresSup);
         if(echelon.equals("PRAG") && heuresTravail >= 384 - tempsMissions ){
             salaire += prime;

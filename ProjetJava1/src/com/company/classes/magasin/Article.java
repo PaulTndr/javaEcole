@@ -5,6 +5,11 @@ public class Article {
     private String name;
     private String categorie;
     private int prixBase;
+    private static int ageMinimum = 10;
+
+    public static int getAgeMinimum() {
+        return ageMinimum;
+    }
 
     public Article(String name, String categorie, int prixBase){
         this.name=name;
