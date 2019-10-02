@@ -40,17 +40,20 @@ public class Main {
         //Création des articles
 	    Habit pull = new Habit("Pull",40);
         Electromenager frigo = new Electromenager("Réfrigérateur",300);
-        Primeur pomme = new Primeur("Pomme",1);
+        Primeur pomme = new Primeur("Pomme",1, true);
+        Primeur avocat = new Primeur("Avocat",2, false);
         //Article pour majeurs
         Alcool vodka = new Alcool("Vodka",10);
 	    pull.print();
         vodka.print();
         frigo.print();
         pomme.print();
+        avocat.print();
 
         //On fait acheter des articles au magasin
         monoprix.achete(frigo,1);
         monoprix.achete(pomme,5);
+        monoprix.achete(avocat,2);
         System.out.println(monoprix.getListQuantiteArticles().toString());
         monoprix.achete(frigo,1);
 
