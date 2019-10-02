@@ -3,12 +3,11 @@ import com.company.classes.personne.CompteBanq;
 import com.company.classes.personne.Personne;
 import com.company.interfaces.IPublicite;
 import com.company.interfaces.ISolde;
-import com.company.interfaces.IVendreKilo;
-import com.company.interfaces.IVendrePiece;
+import com.company.interfaces.IVendre;
 
 import java.util.*;
 
-public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
+public class Magasin implements IPublicite, ISolde, IVendre {
     private String nom;
     private String adresse;
     private int nbrVendeurs;
