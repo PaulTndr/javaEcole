@@ -37,40 +37,49 @@ public class CompteBanq {
         return solde;
     }
 
-    public void setSolde(float solde, String code1) {
-        if(code1.equals(this.code1)) {
-            this.solde = solde;
+    public void setSolde(float solde, String code1) throws pasCodeValideException {
+        try {
+            if(!code1.equals(this.code1)) {
+                throw new pasCodeValideException();
+            }
+        }catch(pasCodeValideException exc){
+            System.out.println(exc.getMessage());
+            return;
         }
-        else{
-            System.out.print("Mauvais code");
-        }
+        this.solde = solde;
     }
 
     public float getDecouvertAutorise() {
         return decouvertAutorise;
     }
 
-    public void setDecouvertAutorise(float decouvertAutorise, String code2) {
-        if(code2.equals(this.code2)) {
-            this.decouvertAutorise = decouvertAutorise;
+    public void setDecouvertAutorise(float decouvertAutorise, String code2) throws pasCodeValideException {
+        try {
+            if(!code2.equals(this.code2)) {
+                throw new pasCodeValideException();
+            }
+        }catch(pasCodeValideException exc){
+            System.out.println(exc.getMessage());
+            return;
         }
-        else{
-            System.out.print("Mauvais code");
-        }
+        this.decouvertAutorise = decouvertAutorise;
     }
 
-    public void versement(String code1, float somme){
+    public void versement(String code1, float somme) throws pasCodeValideException{
         this.setSolde(this.solde + somme, code1);
     }
 
-    public void retrait(String code1, float somme){
+    public void retrait(String code1, float somme) throws pasCodeValideException, pasSoldeSuffisantRetraitException{
         if(this.solde < somme){
-            if(this.decouvertAutorise + this.solde > somme){
-                this.setSolde(this.solde - somme, code1);
+            try {
+                if(!(this.decouvertAutorise + this.solde > somme)) {
+                    throw new pasSoldeSuffisantRetraitException();
+                }
+            }catch(pasSoldeSuffisantRetraitException exc){
+                System.out.println(exc.getMessage());
+                return;
             }
-            else{
-                System.out.print("Solde insuffisant");
-            }
+             this.setSolde(this.solde - somme, code1);
         }
         else{
             this.setSolde(this.solde - somme, code1);
