@@ -1,6 +1,8 @@
 package com.company.classes.magasin;
 import com.company.classes.personne.CompteBanq;
 import com.company.classes.personne.Personne;
+import com.company.classes.personne.pasCodeValideException;
+import com.company.classes.personne.pasSoldeSuffisantRetraitException;
 import com.company.interfaces.IPublicite;
 import com.company.interfaces.ISolde;
 import com.company.interfaces.IVendreKilo;
@@ -25,19 +27,23 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         this.listTauxArticles = new HashMap<String, Long>();
     }
 
-    public void achete(Article oneArticle, int quantite){
+    public void achete(Article oneArticle, int quantite) throws pasSoldeSuffisantAchatException{
         //On check si on a l'argent pour acheter ce qui est demandé
-        if (this.caisse>=quantite*oneArticle.getPrixBase()){
-            this.caisse -= quantite * oneArticle.getPrixBase();
-            //Si on a déjà l'article en stock
-            if (this.listQuantiteArticles.keySet().contains(oneArticle.getName())) {
-                this.listQuantiteArticles.put(oneArticle.getName(),this.listQuantiteArticles.get(oneArticle.getName())+new  Long(quantite));
-            } else { //Sinon
-                this.listQuantiteArticles.put(oneArticle.getName(),new  Long(quantite));
-                this.listTauxArticles.put(oneArticle.getName(),new  Long(100));
+        try{
+            if(this.caisse<=quantite*oneArticle.getPrixBase()){
+                throw new pasSoldeSuffisantAchatException();
             }
-        } else{
-            System.out.println("Le magasin n'a pas assez d'argent pour procéder à l'achat de "+quantite+" "+oneArticle.getName()+".s");
+        }catch(pasSoldeSuffisantAchatException exc){
+            System.out.println(exc.getMessage());
+            return;
+        }
+        this.caisse -= quantite * oneArticle.getPrixBase();
+        //Si on a déjà l'article en stock
+        if (this.listQuantiteArticles.keySet().contains(oneArticle.getName())) {
+            this.listQuantiteArticles.put(oneArticle.getName(),this.listQuantiteArticles.get(oneArticle.getName())+new  Long(quantite));
+        } else { //Sinon
+            this.listQuantiteArticles.put(oneArticle.getName(),new  Long(quantite));
+            this.listTauxArticles.put(oneArticle.getName(),new  Long(100));
         }
     }
 
@@ -50,21 +56,22 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
                         " ce qui équivaut à un prix de " +oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)
         );
     };
-    public void lancerSoldes(Article oneArticle, int tauxSoldePercent) throws pasEntre0Et100Exception {
+    public void lancerSoldes(Article oneArticle, int tauxSoldePercent) throws pasEntre0Et100Exception, pasStockSuffisantException {
         try{
             if (tauxSoldePercent<0 || tauxSoldePercent>=100){
                 throw new pasEntre0Et100Exception(tauxSoldePercent);
             }
+            if(!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){
+                throw new pasStockSuffisantException(0);
+            }
         } catch (pasEntre0Et100Exception exc){
+            System.out.println(exc.getMessage());
+            return;
+        }catch(pasStockSuffisantException exc){
             System.out.println(exc.getMessage());
             return;
         }
 
-        //On check si on a un au moins un article de ce type
-        if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){
-            System.out.println("Vous ne pouvez pas lancer de solde sur un article que vous ne possedez pas");
-            return;
-        }
         //On remplace le taux peu importe les soldes précédentes
         this.listTauxArticles.put(oneArticle.getName(), new Long(100-tauxSoldePercent));
         //On fait la pub de cette nouvelle solde
@@ -84,20 +91,22 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         System.out.println("##################################");
     };
 
-    public boolean estVentePossible(Article oneArticle, int quantite){
-        if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){
-            System.out.println("Le magasin n'a pas cet article en stock");
-            return false;
-        } else {
-            if (this.listQuantiteArticles.get(oneArticle.getName())<quantite){
-                System.out.println("Le magasin n'a pas assez d'exemplaire de cet article en stock");
-                return false;
+    public boolean estVentePossible(Article oneArticle, int quantite) throws pasStockSuffisantException{
+        try{
+            if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())) {
+                throw new pasStockSuffisantException(0);
             }
+            if(this.listQuantiteArticles.get(oneArticle.getName())<quantite){
+                throw new pasStockSuffisantException(Math.toIntExact(this.listQuantiteArticles.get(oneArticle.getName())));
+            }
+        }catch(pasStockSuffisantException exc){
+            System.out.println(exc.getMessage());
+            return false;
         }
         return true;
     }
 
-    public void vendre(Article oneArticle, int quantite){
+    public void vendre(Article oneArticle, int quantite) throws pasStockSuffisantException {
         //Les checking sont fait en amont pour savoir si on peut vendre normalement mais autant recheck ici pour le moment
         if (!this.estVentePossible(oneArticle,quantite)){
             System.out.println("La vente est impossible");
@@ -116,10 +125,14 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
         System.out.println("La vente s'est déroulée avec succès");
     }
 
-    public void vendreAClient(Personne client, CompteBanq compte, String code1, Article oneArticle, int quantite){
+    public void vendreAClient(Personne client, CompteBanq compte, String code1, Article oneArticle, int quantite) throws pasStockSuffisantException, pasAgeLegalException, pasCodeValideException, pasSoldeSuffisantRetraitException {
         //Les checking sont fait en amont pour savoir si on peut vendre normalement mais autant recheck ici pour le moment
-        if(client.calculAge() < oneArticle.getAgeMinimum()){
-            System.out.print("La vente est impossible, vous avez moins de 10 ans");
+        try{
+            if(client.calculAge() < oneArticle.getAgeMinimum()){
+                throw new pasAgeLegalException(oneArticle.getAgeMinimum());
+            }
+        }catch(pasAgeLegalException exc){
+            System.out.println(exc.getMessage());
             return;
         }
         if(this.estVentePossible(oneArticle,quantite)) {
@@ -136,7 +149,7 @@ public class Magasin implements IPublicite, ISolde, IVendrePiece, IVendreKilo {
 
     public void rembourser(Article oneArticle, int quantite){
         if (this.caisse<quantite*oneArticle.getPrixBase()*((float) this.listTauxArticles.get(oneArticle.getName())/100)){
-            System.out.println("C'est la faillite on peut pas rembourser désolé");
+            System.out.println("C'est la faillite on ne peut pas rembourser désolé");
             return;
         }
         if (!this.listQuantiteArticles.keySet().contains(oneArticle.getName())){

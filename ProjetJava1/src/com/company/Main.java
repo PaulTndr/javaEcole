@@ -8,7 +8,7 @@ import com.company.classes.personnel.Enseignant;
 
 public class Main {
 
-    public static void main(String[] args) throws pasEntre0Et100Exception {
+    public static void main(String[] args) throws pasEntre0Et100Exception, pasCodeValideException, pasSoldeSuffisantRetraitException, pasSoldeSuffisantAchatException, pasStockSuffisantException, pasAgeLegalException {
         //Création d'une personne
         System.out.print("---- PERSONNES ----");
         Personne paul = new Personne("Tondereau", "Paul", "197046212000522");
